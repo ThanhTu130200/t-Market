@@ -29,9 +29,12 @@
       <v-btn nuxt to="/cart" v-else icon>
         <v-icon size="20">mdi-cart-outline</v-icon>
       </v-btn>
-      <v-divider vertical class="mx-md-5 mx-2" />
       <v-btn @click="toggleTheme" icon>
         <v-icon size="20">mdi-brightness-7</v-icon>
+      </v-btn>
+      <v-divider vertical class="mx-md-5 mx-2" />
+      <v-btn nuxt to="/login" icon>
+        <v-icon size="20">mdi-account-outline</v-icon>
       </v-btn>
     </v-app-bar>
   </div>
