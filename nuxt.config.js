@@ -40,7 +40,7 @@ export default {
     "@nuxtjs/pwa",
     // https://go.nuxtjs.dev/content
     "@nuxt/content",
-    "vue-sweetalert2/nuxt/no-css",
+    "vue-sweetalert2/nuxt",
     "nuxt-webfontloader",
     "@nuxtjs/axios",
   ],
@@ -100,6 +100,10 @@ export default {
         },
       },
     },
+  },
+
+  env: {
+    fbApiKey: "AIzaSyBRvGDGH63PNaKX4ZKpv4fhS0Mc4xlIWtk",
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

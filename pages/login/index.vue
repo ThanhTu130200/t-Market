@@ -22,15 +22,17 @@
             outlined
             label="Email"
             type="email"
+            validate-on-blur
           />
         </v-col>
         <v-col cols="12">
           <v-text-field
             v-model="password"
-            :rules="[rules.required]"
+            :rules="[rules.required, rules.password]"
             outlined
             label="Password"
             type="password"
+            validate-on-blur
           />
         </v-col>
       </v-row>
@@ -58,9 +60,8 @@
 export default {
   data() {
     return {
-      email: null,
-      password: null,
-      confirmPassword: null,
+      email: "",
+      password: "",
       rules: {
         required: (value) => !!value || "Required",
         email: (value) => {
@@ -68,12 +69,45 @@ export default {
 
           return pattern.test(value) || "Invalid e-mail";
         },
+        password: (value) =>
+          !!(value.length >= 6) || "Password must be 6 characters",
       },
     };
   },
   methods: {
     async login() {
       if (!this.$refs.form.validate()) return;
+
+      await this.$axios
+        .$post(
+          `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.fbApiKey}`,
+          {
+            email: this.email,
+            password: this.password,
+            returnSecureToken: true,
+          }
+        )
+        .then(() =>
+          this.$swal({
+            title: "Login success",
+            icon: "success",
+            timer: 8000,
+            timerProgressBar: true,
+            showConfirmButton: true,
+            showCloseButton: true,
+          })
+        )
+        .then(() => this.$router.push("/"))
+        .catch(() =>
+          this.$swal({
+            text: "Something went wrong. Try again",
+            icon: "error",
+            timer: 8000,
+            timerProgressBar: true,
+            showConfirmButton: true,
+            showCloseButton: true,
+          })
+        );
     },
   },
 };
