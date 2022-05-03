@@ -1,6 +1,7 @@
 export default function ({ store }, inject) {
   store.commit("cart/LoadCart");
-  store.commit("cart/LoadUser");
+
+  if (localStorage.getItem("user")) store.commit("cart/LoadUser");
 
   inject("formatMoney", (money) => {
     return Intl.NumberFormat("en-US", {

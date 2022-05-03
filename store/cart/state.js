@@ -3,7 +3,7 @@ export default function (params) {
     cart: [],
     user: {
       email: "",
-      idToken: null,
+      id: null,
     },
   };
 }

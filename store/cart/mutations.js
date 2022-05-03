@@ -1,12 +1,10 @@
 export default {
   // Cart Mutations
   async LoadCart(state) {
-    if (state.user.idToken) {
-      const id = state.user.idToken.substring(0, 40);
-
+    if (state.user.id) {
       await this.$axios
         .$get(
-          `https://t-market-2b11c-default-rtdb.asia-southeast1.firebasedatabase.app/${id}.json`
+          `https://t-market-2b11c-default-rtdb.asia-southeast1.firebasedatabase.app/${state.user.id}.json`
         )
         .then((result) => {
           if (result) {
@@ -81,9 +79,12 @@ export default {
   },
   async AuthenticateUser(state, { email, password, isLoginForm }) {
     let authUrlApi = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.fbApiKey}`;
+    let message = "Login success";
 
-    if (!isLoginForm)
+    if (!isLoginForm) {
       authUrlApi = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.fbApiKey}`;
+      message = "Register success";
+    }
 
     await this.$axios
       .$post(authUrlApi, {
@@ -92,19 +93,25 @@ export default {
         returnSecureToken: true,
       })
       .then((result) => {
+        const id = result.email.replace("@", "-").replace(".", "-");
+
         state.user.email = result.email;
-        state.user.idToken = result.idToken;
+        state.user.id = id;
 
         localStorage.setItem(
           "user",
-          JSON.stringify({ email, password, idToken: result.idToken })
+          JSON.stringify({
+            email,
+            password,
+            id,
+          })
         );
 
         return result;
       })
       .then((result) => {
         this.$swal({
-          title: "Success",
+          text: message,
           icon: "success",
           timer: 8000,
           timerProgressBar: true,
@@ -149,7 +156,9 @@ export default {
 
   LogOut(state) {
     state.user.email = "";
-    state.user.idToken = "";
+    state.user.id = "";
+
+    localStorage.removeItem("user");
 
     this.commit("cart/LoadCart");
   },
@@ -157,7 +166,7 @@ export default {
 
 const UpdateCart = (_this, state) => {
   if (state.user.email) {
-    UpdateCartOnFirebase(_this, state.cart, state.user.idToken);
+    UpdateCartOnFirebase(_this, state.cart, state.user.id);
   } else {
     UpdateLocalStorage(state.cart);
   }
@@ -182,10 +191,7 @@ const UpdateLocalStorage = (cart) => {
   localStorage.setItem("freeCart", JSON.stringify(cart));
 };
 
-const UpdateCartOnFirebase = (_this, cart, idToken) => {
-  // id = token's first 10 letters
-  const id = idToken.substring(0, 40);
-
+const UpdateCartOnFirebase = (_this, cart, id) => {
   _this.$axios
     .$put(
       `https://t-market-2b11c-default-rtdb.asia-southeast1.firebasedatabase.app/${id}.json`,
