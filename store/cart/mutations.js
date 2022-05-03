@@ -76,6 +76,8 @@ export default {
 
   async LoadUser(state) {
     const user = JSON.parse(localStorage.getItem("user"));
+
+    this.commit("cart/AuthenticateUser", { ...user, isLoginForm: true });
   },
   async AuthenticateUser(state, { email, password, isLoginForm }) {
     let authUrlApi = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.fbApiKey}`;

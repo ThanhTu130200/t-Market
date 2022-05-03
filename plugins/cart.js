@@ -1,6 +1,6 @@
 export default function ({ store }, inject) {
   store.commit("cart/LoadCart");
-  // store.dispatch("cart/loadUser");
+  store.commit("cart/LoadUser");
 
   inject("formatMoney", (money) => {
     return Intl.NumberFormat("en-US", {
