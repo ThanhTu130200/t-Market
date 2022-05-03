@@ -40,7 +40,7 @@ export default {
     "@nuxtjs/pwa",
     // https://go.nuxtjs.dev/content
     "@nuxt/content",
-    "vue-sweetalert2/nuxt",
+    "vue-sweetalert2/nuxt/no-css",
     "nuxt-webfontloader",
     "@nuxtjs/axios",
   ],

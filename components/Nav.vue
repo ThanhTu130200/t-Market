@@ -33,19 +33,52 @@
         <v-icon size="20">mdi-brightness-7</v-icon>
       </v-btn>
       <v-divider vertical class="mx-md-5 mx-2" />
-      <v-btn nuxt to="/login" icon>
+      <v-btn
+        v-if="$store.state.cart.user.email == '' && loginButtonVisible"
+        nuxt
+        to="/login"
+        min-width="100"
+        icon
+      >
         <v-icon size="20">mdi-account-outline</v-icon>
+        <p style="margin: 0" class="text-capitalize">Login</p>
+      </v-btn>
+      <v-btn
+        v-else-if="$store.state.cart.user.email == '' && !loginButtonVisible"
+        nuxt
+        to="/register"
+        min-width="100"
+        icon
+      >
+        <v-icon size="20">mdi-account-outline</v-icon>
+        <p style="margin: 0" class="text-capitalize">Register</p>
+      </v-btn>
+      <v-btn v-else @click="$store.commit('cart/LogOut')" min-width="100" icon>
+        <p style="margin: 0" class="text-capitalize">Logout</p>
+        <v-icon size="20">mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   methods: {
     toggleTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     },
+  },
+  props: {
+    loginButtonVisible: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  computed: {
+    ...mapGetters({
+      email: "cart/getEmail",
+    }),
   },
 };
 </script>

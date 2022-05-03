@@ -88,39 +88,14 @@ export default {
     };
   },
   methods: {
-    async register() {
+    register() {
       if (!this.$refs.form.validate()) return;
 
-      await this.$axios
-        .$post(
-          `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.fbApiKey}`,
-          {
-            email: this.email,
-            password: this.password,
-            returnSecureToken: true,
-          }
-        )
-        .then(() =>
-          this.$swal({
-            title: "Register success",
-            icon: "success",
-            timer: 8000,
-            timerProgressBar: true,
-            showConfirmButton: true,
-            showCloseButton: true,
-          })
-        )
-        .then(() => this.$router.push("/"))
-        .catch(() =>
-          this.$swal({
-            text: "Something went wrong. Try again",
-            icon: "error",
-            timer: 8000,
-            timerProgressBar: true,
-            showConfirmButton: true,
-            showCloseButton: true,
-          })
-        );
+      this.$store.commit("cart/AuthenticateUser", {
+        email: this.email,
+        password: this.password,
+        isLoginForm: false,
+      });
     },
   },
 };

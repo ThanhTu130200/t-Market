@@ -1,4 +1,4 @@
 {
   "nuxt.isNuxtApp": true,
-  "cSpell.words": ["axios", "nuxt", "swal"]
+  "cSpell.words": ["axios", "Firestore", "nuxt", "swal"]
 }

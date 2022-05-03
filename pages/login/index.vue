@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Nav />
+    <Nav :loginButtonVisible="false" />
     <v-form lazy-validation ref="form" class="mt-10">
       <div class="d-flex justify-center align-center mb-5">
         <p class="font-weight-bold mb-0">Don't have any account ?</p>
@@ -75,39 +75,14 @@ export default {
     };
   },
   methods: {
-    async login() {
+    login() {
       if (!this.$refs.form.validate()) return;
 
-      await this.$axios
-        .$post(
-          `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.fbApiKey}`,
-          {
-            email: this.email,
-            password: this.password,
-            returnSecureToken: true,
-          }
-        )
-        .then(() =>
-          this.$swal({
-            title: "Login success",
-            icon: "success",
-            timer: 8000,
-            timerProgressBar: true,
-            showConfirmButton: true,
-            showCloseButton: true,
-          })
-        )
-        .then(() => this.$router.push("/"))
-        .catch(() =>
-          this.$swal({
-            text: "Something went wrong. Try again",
-            icon: "error",
-            timer: 8000,
-            timerProgressBar: true,
-            showConfirmButton: true,
-            showCloseButton: true,
-          })
-        );
+      this.$store.commit("cart/AuthenticateUser", {
+        email: this.email,
+        password: this.password,
+        isLoginForm: true,
+      });
     },
   },
 };
