@@ -10,10 +10,7 @@ export default {
         )
         .then((result) => {
           if (result) {
-            console.log("get ra thong tin ");
-            console.log(result);
-            // this.state.cart.cart = result;
-            console.log("Put data from firebase to statement");
+            this.state.cart.cart = result;
           } else {
             this.state.cart.cart = [];
           }
@@ -151,8 +148,6 @@ export default {
   LogOut(state) {
     state.user.email = "";
     state.user.idToken = "";
-
-    console.log(state);
 
     this.commit("cart/LoadCart");
   },
