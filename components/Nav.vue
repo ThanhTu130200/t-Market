@@ -34,7 +34,7 @@
       </v-btn>
       <v-divider vertical class="mx-md-5 mx-2" />
       <v-btn
-        v-if="$store.state.cart.user.email == '' && loginButtonVisible"
+        v-if="!email && loginButtonVisible"
         nuxt
         to="/login"
         min-width="100"
@@ -44,7 +44,7 @@
         <p style="margin: 0" class="text-capitalize">Login</p>
       </v-btn>
       <v-btn
-        v-else-if="$store.state.cart.user.email == '' && !loginButtonVisible"
+        v-else-if="!email && !loginButtonVisible"
         nuxt
         to="/register"
         min-width="100"
@@ -62,8 +62,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 export default {
+  middleware: "check-auth",
   methods: {
     toggleTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
@@ -76,8 +77,8 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({
-      email: "cart/getEmail",
+    ...mapState({
+      email: (state) => state.cart.user.email,
     }),
   },
 };

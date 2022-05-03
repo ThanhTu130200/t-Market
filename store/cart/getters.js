@@ -1,3 +1,3 @@
 export default {
-  getEmail: (state) => state.user.email,
+  isAuthenticated: (state) => !!state.user.idToken,
 };

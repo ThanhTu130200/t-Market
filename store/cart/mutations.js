@@ -1,7 +1,7 @@
 export default {
   // Cart Mutations
   async LoadCart(state) {
-    if (state.user.email) {
+    if (state.user.idToken) {
       const id = state.user.idToken.substring(0, 40);
 
       await this.$axios
@@ -10,7 +10,10 @@ export default {
         )
         .then((result) => {
           if (result) {
-            this.state.cart.cart = result;
+            console.log("get ra thong tin ");
+            console.log(result);
+            // this.state.cart.cart = result;
+            console.log("Put data from firebase to statement");
           } else {
             this.state.cart.cart = [];
           }
@@ -25,6 +28,7 @@ export default {
       }
     }
   },
+
   AddToCart(state, product) {
     //   Check if the item is in the cart already
     let itemFound = state.cart.find((p) => p.product.id === product.id);
@@ -40,6 +44,7 @@ export default {
 
     UpdateCart(this, state);
   },
+
   DecreaseItemCount(state, index) {
     let item = state.cart[index];
     if (!item) return;
@@ -51,23 +56,30 @@ export default {
 
     UpdateCart(this, state);
   },
+
   RemoveCartItem(state, index) {
     state.cart.splice(index, 1);
 
     UpdateCart(this, state);
   },
+
   IncreaseItemCount(state, index) {
     let item = state.cart[index];
     item.quantity += 1;
 
     UpdateCart(this, state);
   },
+
   ClearCart(state) {
     state.cart = [];
     UpdateCart(this, state);
   },
 
   // Authenticate Mutations
+
+  async LoadUser(state) {
+    const user = JSON.parse(localStorage.getItem("user"));
+  },
   async AuthenticateUser(state, { email, password, isLoginForm }) {
     let authUrlApi = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.fbApiKey}`;
 
@@ -81,6 +93,17 @@ export default {
         returnSecureToken: true,
       })
       .then((result) => {
+        state.user.email = result.email;
+        state.user.idToken = result.idToken;
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ email, password, idToken: result.idToken })
+        );
+
+        return result;
+      })
+      .then((result) => {
         this.$swal({
           title: "Success",
           icon: "success",
@@ -91,11 +114,7 @@ export default {
         });
         return result;
       })
-      .then((result) => {
-        state.user.email = result.email;
-        state.user.idToken = result.idToken;
-        return result;
-      })
+
       .then((result) => {
         return result;
       })
@@ -120,9 +139,21 @@ export default {
 
     this.commit("cart/LoadCart");
   },
+
+  InitAuth(state) {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user) return false;
+
+    state.user = user;
+  },
+
   LogOut(state) {
     state.user.email = "";
     state.user.idToken = "";
+
+    console.log(state);
+
     this.commit("cart/LoadCart");
   },
 };
