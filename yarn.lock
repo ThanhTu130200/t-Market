@@ -1999,6 +1999,11 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
+"@sweetalert2/theme-material-ui@^5.0.10":
+  version "5.0.10"
+  resolved "https://registry.yarnpkg.com/@sweetalert2/theme-material-ui/-/theme-material-ui-5.0.10.tgz#64b8afa7a155cb717b8ecf21d7957ace5da895e7"
+  integrity sha512-xeudChhjIgiuwanGoXNse1kRpkfMrnda/ZB/vavCBX5+hoQhDXwAcvu7NWfmbWzC0Ddw9sqipUmpFCx3UgX5CA==
+
 "@tootallnate/once@2":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
@@ -9615,7 +9620,7 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-sweetalert2@11.x:
+sweetalert2@11.x, sweetalert2@^11.4.10:
   version "11.4.10"
   resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.4.10.tgz#d0f7733a0997aad18b81c6f6b39a01c3a6cb4e21"
   integrity sha512-Ms3mryLA/c5+llHNY0I9KXU8bv0N1a874gZr7xMPOiSnLD9veHZA92nZvJOkuN1hrdcR8kyj4IN8tBxlAIjVww==
